@@ -60,7 +60,7 @@ class AuthController extends Controller
         }
 
         $user->is_verified = 'verificado';
-        $user->email_verfied_at = now();
+        $user->email_verified_at = now();
         $user->verification_code = null;
         $user->verification_code_expires_at = null;
         $user->save();
