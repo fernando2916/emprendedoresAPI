@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Blog\PostController;
-use App\Http\Controllers\CategoriaPost\CategoriaPostController;
+use App\Http\Controllers\Blog\BlogController;
+use App\Http\Controllers\Categorias\CategoriasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +15,6 @@ Route::prefix('auth')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);  
 });
 
-Route::apiResource('posts', PostController::class);
-Route::apiResource('categoria', CategoriaPostController::class);
+// Route::apiResource('posts', PostController::class);
+Route::apiResource('blog', BlogController::class);
+Route::apiResource('categoria', CategoriasController::class);

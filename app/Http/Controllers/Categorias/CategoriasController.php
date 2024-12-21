@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\CategoriaPost;
+namespace App\Http\Controllers\Categorias;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoriaCollection;
-use App\Http\Resources\CategoriaResource;
-use App\Models\CategoriaPost;
+use App\Http\Resources\CategoriasResource;
+use App\Models\Categorias;
 use Illuminate\Http\Request;
 
-class CategoriaPostController extends Controller
+class CategoriasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return new CategoriaCollection(CategoriaPost::all());
-        
+        return new CategoriasResource(Categorias::all());
     }
 
     /**
@@ -25,9 +23,10 @@ class CategoriaPostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required'
+            'nombre' => 'required',
+            'tipo' => 'required',
         ]);
-        $categoria = CategoriaPost::create($request->all());
+        $categoria = Categorias::create($request->all());
 
         return response()->json([
             'message' => 'Categoría creada exitosamente',
@@ -38,11 +37,18 @@ class CategoriaPostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($tipo)
     {
-        $categoria = CategoriaPost::findOrFail($id);
+       // Filtrar las categorías por tipo
+    $categorias = Categorias::where('tipo', $tipo)->get();
 
-        return new CategoriaResource($categoria);
+    // Verificar si existen categorías con ese tipo
+    if ($categorias->isEmpty()) {
+        return response()->json(['message' => 'No se encontraron categorías para este tipo'], 404);
+    }
+
+    // Retornar las categorías utilizando un resource (opcional)
+    return CategoriasResource::collection($categorias);
     }
 
     /**
@@ -50,7 +56,7 @@ class CategoriaPostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $categoria = CategoriaPost::find($id);
+        $categoria = Categorias::find($id);
 
         if(!$categoria) {
             return response()->json([
@@ -59,7 +65,8 @@ class CategoriaPostController extends Controller
         }
 
         $request->validate([
-            'nombre' => 'required'
+            'nombre' => 'required',
+            'tipo' => 'required',
         ]);
 
         if(isset($request['nombre'])) {
@@ -79,7 +86,7 @@ class CategoriaPostController extends Controller
      */
     public function destroy(string $id)
     {
-        $categoria = CategoriaPost::find($id);
+        $categoria = Categorias::find($id);
 
         if(!$categoria) {
             return response()->json([
