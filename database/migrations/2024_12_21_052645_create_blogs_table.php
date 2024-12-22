@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('imagen_url');
             $table->string('descripción_corta');
             $table->text('contenido');
-            $table->string('slug');
+            $table->string('post_id')->unique()->nullable(true);
+            $table->string('slug')->unique();
             $table->foreignId('categorias_id')->constrained()->onDelete('cascade');
             $table->string('tipo');
             $table->string('tiempo_de_lectura');

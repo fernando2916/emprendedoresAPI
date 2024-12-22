@@ -22,6 +22,7 @@ class BlogResource extends JsonResource
             'slug' => $this->slug,
             'descripción_corta' => $this->descripción_corta,
             'contenido' => $this->contenido,
+            'post_id' => $this->post_id,
             'categorias' => $this->categorias_id,
             'tipo' => $this->tipo,
             'tiempo_de_lectura' => $this->tiempo_de_lectura,

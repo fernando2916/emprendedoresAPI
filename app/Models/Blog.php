@@ -18,6 +18,7 @@ class Blog extends Model
         'descripción_corta',
         'contenido',
         'categorias_id',
+        'post_id',
         'slug',
         'tipo',
         'tiempo_de_lectura',

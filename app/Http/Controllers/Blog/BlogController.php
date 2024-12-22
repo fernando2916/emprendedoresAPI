@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BlogCollection;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -40,6 +41,8 @@ class BlogController extends Controller
         'user_id' => 'required|exists:users,id',
         'estado' => 'required|in:pendiente,publicado,borrador',
         ]);
+
+        $validateData['post_id'] = Str::uuid()->toString();
 
         $post = Blog::create($validateData);
 
@@ -81,9 +84,9 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $post_id)
     {
-        $post = Blog::find($id);
+        $post = Blog::where('post_id', $post_id)->first();
 
         if (!$post) {
             return response()->json(['message' => 'Publicación no encontrada'], 404);
@@ -95,16 +98,18 @@ class BlogController extends Controller
             'descripción_corta' => 'nullable|string|max:500',
             'contenido' => 'required|string',
             'categoria_id' => 'required|exists:categorias,id',
-            'slug' => 'required|string|unique:blogs,slug|max:255',
+            'slug' => 'required|string|unique:blogs,slug|max:255' . $post->id . '|max:255',
             'tipo' => 'required|in:articulo,noticia,blog',
             'tiempo_de_lectura' => 'nullable|string|max:50',
-            'user_id' => 'required|exists:users,id',
             'estado' => 'required|in:pendiente,publicado,borrador',
         ]);
 
         $post->update($validatedData);
 
-        return response()->json($post, 200);
+        return response()->json([
+            'message' => 'Publicación actualizada correctamente',
+            'data' => $post,
+        ], 200);
     }
 
     /**
