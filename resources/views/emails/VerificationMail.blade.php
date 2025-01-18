@@ -15,6 +15,7 @@
         }
         .saludo {
             font-weight: 600;
+            text-transform: capitalize; 
         }
         p {
             margin: 1.25rem 0;
@@ -43,7 +44,7 @@
 <body>
     <div class="container">
         
-        <p>Hola: <span class="saludo">{{ $name }}</span>: te has registrado satisfactioriamente en Emprendedores Creativos, ya casi esta todo listo, solo debes confirmar tu cuenta.
+        <p>Hola <span class="saludo">{{ $name }} {{ $last_name }}</span>, te has registrado satisfactioriamente en Emprendedores Creativos, ya casi esta todo listo, solo debes confirmar tu cuenta.
         </p>
         <p class="">Utiliza el siguiente código para iniciar sesión en tu cuenta de Emprendedores Creativos</p>
         <div>

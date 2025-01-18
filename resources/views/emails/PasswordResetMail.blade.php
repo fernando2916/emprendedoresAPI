@@ -15,6 +15,8 @@
         }
         .saludo {
             font-weight: 600;
+            text-transform: capitalize; 
+
         }
         p {
             margin: 1.25rem 0;
@@ -22,7 +24,9 @@
         a {
             background-color: #6e004c;
             border-radius: 0.375rem;
-            margin-top: 1.25rem;
+            text-decoration: none;
+            color: #fff;
+            padding: 15px;
             
         }
         a:hover {
@@ -30,18 +34,17 @@
             transition-duration: 300ms;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
         }
-        .codigo {
-            font-weight: 600;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-        }
         
     </style>
 </head>
 <body>
     <div class="container">
-        <h2> Hola {{ $name}} {{ $last_name}}, has solicitado restablecer tu contraseña, visita el siguiente link para poder hacerlo.</h2>
-        <a href="{{ env("FRONTEND_URL")."/auth/confirmar-contrasena/".$user->verification_id}}">Restablecer Contraseña</a>
+        <h2> Hola <span class="saludo">{{ $name}} {{ $last_name}}</span></h2>
+        <p class="">has solicitado restablecer tu contraseña, visita el siguiente link para poder hacerlo.</p>
+        <div>
+
+            <a href="{{ env("FRONTEND_URL")."/auth/confirmar-contrasena/".$user->verification_id}}">Restablecer Contraseña</a>
+        </div>
     </div>
     <div>
         <p>Si tu no lo solicitaste, ignora este mensaje.</p>

@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 
@@ -54,6 +55,9 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Código de verificación inválido.'], 400);
         }
+        if ($user->verification_code !== $request->verification_code) {
+            return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
+        }
 
         if (now()->greaterThan($user->verification_code_expires_at)) {
             return response()->json(['message' => 'El código de verificación ha expirado.'], 400);
@@ -90,9 +94,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'No se encontró el usuario'], 404);
         }
 
+
         if ($user->email_verified_at) {
             return response()->json(['message' => 'La cuenta ya está verificada'], 400);
         }
+
+
 
         $user->verification_code = rand(100000, 999999);
         $user->verification_code_expires_at = now()->addMinutes(15);
