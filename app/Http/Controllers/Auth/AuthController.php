@@ -218,23 +218,23 @@ class AuthController extends Controller
         }
     }
 
-    public function me() {
-        return response()->json(auth('api')->user());
-    }
+    // public function me() {
+    //     return response()->json(auth('api')->user());
+    // }
 
-    public function logout() {
-        try {
-            JWTAuth::invalidate(JWTAuth::getToken());
+    // public function logout() {
+    //     try {
+    //         JWTAuth::invalidate(JWTAuth::getToken());
 
-            return response()->json([
-                'message' => 'Sesión cerrada exitosamente'
-            ], 200);
+    //         return response()->json([
+    //             'message' => 'Sesión cerrada exitosamente'
+    //         ], 200);
 
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json([
-                'message' => 'Error al cerrar sesión, por favor intente nuevamente'
-            ], 500);
-        }
-    }
+    //     } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+    //         return response()->json([
+    //             'message' => 'Error al cerrar sesión, por favor intente nuevamente'
+    //         ], 500);
+    //     }
+    // }
 
 }
