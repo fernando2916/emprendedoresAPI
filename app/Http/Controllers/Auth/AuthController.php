@@ -12,10 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\RateLimiter;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -209,32 +208,26 @@ class AuthController extends Controller
                 'token' => $newToken,
             ], 200);
 
-        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['message' => 'token no inválido'], 401);
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['message' => 'token expirado'], 401);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Ocurrió un error al actualizar el token '], 500);
+        } catch (JWTException $e) {
+            return response()->json(['message' => 'token no inválido', $e], 401);
+        } catch (JWTException $e) {
+            return response()->json(['message' => 'token expirado', $e], 401);
+        } catch (JWTException $e) {
+            return response()->json(['message' => 'Ocurrió un error al actualizar el token ', $e], 500);
         }
     }
 
-    // public function me() {
-    //     return response()->json(auth('api')->user());
-    // }
+    public function me() {
+    $user = Auth::user();
+        // return response()->json(auth('api')->user());
+        return response()->json($user, 200);
+    }
 
-    // public function logout() {
-    //     try {
-    //         JWTAuth::invalidate(JWTAuth::getToken());
-
-    //         return response()->json([
-    //             'message' => 'Sesión cerrada exitosamente'
-    //         ], 200);
-
-    //     } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-    //         return response()->json([
-    //             'message' => 'Error al cerrar sesión, por favor intente nuevamente'
-    //         ], 500);
-    //     }
-    // }
+    public function logout() {
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json([
+            'message' => 'Sesión creeada correctamente.'
+        ], 200);
+    }
 
 }

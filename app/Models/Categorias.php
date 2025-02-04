@@ -10,7 +10,19 @@ class Categorias extends Model
 {
     use HasFactory;
 
+    const TIPOS = ['Post', 'Productos', 'Cursos', 'Recursos'];
+
     protected $fillable = ['nombre', 'tipo'];
+
+    protected static function boot() {
+         parent::boot();
+
+         static::saving(function ($categorias) {
+            if(!in_array($categorias->tipo, self::TIPOS)) {
+                throw new \Exception('Tipo de categoria no válido');
+            }
+         });
+    }
 
     public function posts() : HasMany
     {

@@ -15,7 +15,8 @@ Route::prefix('auth')->group(function() {
     Route::post('/new-password/{id}', [AuthController::class, 'new_Password']);
     Route::post('/login', [AuthController::class, 'login']);  
     Route::get('/refresh', [AuthController::class, 'refreshToken']);  
-    // Route::post('/logout', [AuthController::class, 'logout']);  
+    Route::get('/me', [AuthController::class, 'me']);  
+    Route::post('/logout', [AuthController::class, 'logout']);  
 });
 
 // Route::apiResource('posts', PostController::class);
