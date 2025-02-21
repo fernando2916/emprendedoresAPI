@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('tipo');
             $table->string('tiempo_de_lectura');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('estado', ['pendiente', 'publicado'])->default('pendiente');
+            $table->string('estado')->default('pendiente');
             $table->timestamps();
         });
     }

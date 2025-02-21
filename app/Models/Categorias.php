@@ -10,7 +10,7 @@ class Categorias extends Model
 {
     use HasFactory;
 
-    const TIPOS = ['Post', 'Productos', 'Cursos', 'Recursos'];
+    const TIPOS = ['Post', 'Producto', 'Curso', 'Recurso'];
 
     protected $fillable = ['nombre', 'tipo'];
 

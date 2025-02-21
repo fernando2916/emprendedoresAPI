@@ -12,6 +12,8 @@ class Blog extends Model
 {
     use HasFactory;
 
+    const ESTADO = ['pendiente', 'publicado'];
+
     protected $fillable = [
         'titulo',
         'imagen_url',
@@ -52,6 +54,12 @@ class Blog extends Model
 
         static::updating(function ($blog) {
             $blog->slug = Str::slug($blog->titulo);
+        });
+
+        static::saving(function ($blog) {
+            if(!in_array($blog->estado, self::ESTADO)) {
+                throw new \Exception('Estado No válido');
+            }
         });
     }
 }

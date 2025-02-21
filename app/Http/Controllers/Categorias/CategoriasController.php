@@ -15,6 +15,7 @@ class CategoriasController extends Controller
     public function index()
     {
         return new CategoriasResource(Categorias::all());
+        // return response()->json(['categorias' => Categorias::all()]);
     }
 
     /**
@@ -37,18 +38,32 @@ class CategoriasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($tipo)
+    public function showById($id)
     {
-       // Filtrar las categorías por tipo
-    $categorias = Categorias::where('tipo', $tipo)->get();
-
-    // Verificar si existen categorías con ese tipo
-    if ($categorias->isEmpty()) {
-        return response()->json(['message' => 'No se encontraron categorías para este tipo'], 404);
+        // Buscar la categoría por ID
+        $categoria = Categorias::find($id);
+    
+        // Verificar si la categoría existe
+        if (!$categoria) {
+            return response()->json(['message' => 'Categoría no encontrada'], 404);
+        }
+    
+        // Retornar la categoría utilizando un resource (opcional)
+        return new CategoriasResource($categoria);
     }
-
-    // Retornar las categorías utilizando un resource (opcional)
-    return CategoriasResource::collection($categorias);
+    
+    public function showByTipo($tipo)
+    {
+        // Filtrar las categorías por tipo
+        $categorias = Categorias::where('tipo', $tipo)->get();
+    
+        // Verificar si existen categorías con ese tipo
+        if ($categorias->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron categorías para este tipo'], 404);
+        }
+    
+        // Retornar las categorías utilizando un resource (opcional)
+        return CategoriasResource::collection($categorias);
     }
 
     /**
@@ -65,14 +80,11 @@ class CategoriasController extends Controller
         }
 
         $request->validate([
-            'nombre' => 'required',
-            'tipo' => 'required',
+            'nombre' => 'required|string',
+            'tipo' => 'required|string',
         ]);
 
-        if(isset($request['nombre'])) {
-            $categoria->nombre = $request['nombre'];
-        }
-
+        $categoria->fill($request->only(['nombre', 'tipo']));
         $categoria->save();
 
         return response()->json([
