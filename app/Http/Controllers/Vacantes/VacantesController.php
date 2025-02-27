@@ -65,7 +65,39 @@ class VacantesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $vacante = Vacantes::find($id);
+
+        if(!$vacante) {
+            return response()->json([
+                'message' => 'Vacante no encontrada'
+            ], 404); 
+        }
+
+        $request->validate([
+            'puesto' => 'required',
+            'modalidad' => 'required',
+            'horario' => 'required',
+            'salario' => 'required',
+            'postulacion' => 'required',
+            'descripcion' => 'required',
+            'requisitos' => 'required',
+        ]);
+
+        $vacante->fill($request->only([
+            'puesto',
+            'modalidad',
+            'horario',
+            'salario',
+            'postulacion',
+            'descripcion',
+            'requisitos',
+        ]));
+        $vacante->save();
+
+        return response()->json([
+            'message' => 'Vacante actualizada correctamente',
+            'data' => $vacante
+        ]);
     }
 
     /**
@@ -73,6 +105,19 @@ class VacantesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $vacante = Vacantes::find($id);
+
+        if(!$vacante) {
+
+            return response()->json([
+                'message' => 'Vacante no encontrada'
+            ], 404);
+        }
+
+        $vacante->delete();
+
+        return response()->json([
+            'message' => 'Vacante eliminada correctamente'
+        ]);
     }
 }

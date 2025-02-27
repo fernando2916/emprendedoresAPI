@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Categorias\CategoriasController;
 use App\Http\Controllers\Vacantes\VacantesController;
@@ -23,6 +24,7 @@ Route::prefix('auth')->group(function() {
 Route::apiResource('blog', BlogController::class);
 // Route::apiResource('categoria', CategoriasController::class);
 Route::apiResource('vacante', VacantesController::class);
+Route::apiResource('users', UserController::class);
 
 Route::get('/categoria', [CategoriasController::class, 'index']);
 Route::get('/categoria/{id}', [CategoriasController::class, 'showById']);

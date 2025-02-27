@@ -9,6 +9,8 @@ class Vacantes extends Model
 {
     use HasFactory;
 
+    // const MODALIDAD = ['Presencial', 'Hibrido', 'Home Office'];
+
     protected $fillable = [
         'id',
         'puesto',
@@ -20,4 +22,14 @@ class Vacantes extends Model
         'descripcion',
         'requisitos',
     ];
+
+//     protected static function boot() {
+//         parent::boot();
+
+//         static::saving(function ($categorias) {
+//            if(!in_array($categorias->modalidad, self::MODALIDAD)) {
+//                throw new \Exception('Tipo de modalidad no válido');
+//            }
+//         });
+//    }
 }
